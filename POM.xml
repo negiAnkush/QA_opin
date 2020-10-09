@@ -1,0 +1,316 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>CNBAutomation</groupId>
+  <artifactId>CNBAutomation</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <properties>
+	   <maven.compiler.source>1.8</maven.compiler.source>
+	   <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+  
+<repositories>
+    <repository>
+      <id>jcenter</id>
+      <url>https://jcenter.bintray.com/</url>
+    </repository>
+</repositories>
+<dependencies>
+<dependency>
+    <groupId>io.appium</groupId>
+    <artifactId>java-client</artifactId>
+    <version>7.0.0</version>
+</dependency>
+<dependency>
+    <groupId>com.microsoft.appcenter</groupId>
+    <artifactId>appium-test-extension</artifactId>
+    <version>1.5</version>
+</dependency>
+<dependency>
+    <groupId>org.reflections</groupId>
+    <artifactId>reflections</artifactId>
+    <version>0.9.11</version>
+    <exclusions>
+       <exclusion>
+    		<groupId>com.google.guava</groupId>
+    		<artifactId>guava</artifactId>
+       </exclusion>
+     </exclusions> 
+</dependency>
+<dependency>
+    <groupId>org.apache.maven.shared</groupId>
+    <artifactId>maven-invoker</artifactId>
+    <version>3.0.1</version>
+</dependency>
+<dependency>
+    <groupId>com.google.code.gson</groupId>
+    <artifactId>gson</artifactId>
+    <version>2.8.5</version>
+</dependency>
+<dependency>
+    <groupId>com.googlecode.json-simple</groupId>
+    <artifactId>json-simple</artifactId>
+    <version>1.1.1</version>
+</dependency>
+<dependency>
+    <groupId>com.jayway.restassured</groupId>
+    <artifactId>rest-assured</artifactId>
+    <version>2.9.0</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>com.aventstack</groupId>
+    <artifactId>extentreports</artifactId>
+    <version>4.0.9</version>
+    <exclusions>
+        <exclusion>
+		    <groupId>org.mongodb</groupId>
+		    <artifactId>mongodb-driver</artifactId>
+        </exclusion>
+      </exclusions> 
+</dependency>
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi-ooxml</artifactId>
+    <version>4.0.1</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/junit/junit -->
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.12</version>
+</dependency>
+
+</dependencies>
+
+<profiles>
+
+
+ <profile>  
+  <id>generate-test-series-report</id> 
+  <properties>
+        <appcenter.app>${appcenter.app}</appcenter.app>
+        <appcenter.test-series>${appcenter.test-series}</appcenter.test-series>
+
+  </properties>
+  <build>  
+	   <plugins>
+		   <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-surefire-plugin</artifactId>
+		        <version>3.0.0-M3</version>
+		        <configuration>
+		          <skipTests>true</skipTests>
+		        </configuration>
+		    </plugin> 
+		     
+		    <plugin>  
+			     <groupId>org.codehaus.mojo</groupId>  
+			     <artifactId>exec-maven-plugin</artifactId>  
+			     <version>1.1.1</version>  
+			     <executions>  
+				      <execution>  
+				       <phase>package</phase>  
+				       <goals>  
+				        	<goal>java</goal>  
+				       </goals>  
+				       <configuration>  
+					        <mainClass>automation.execution.central.GenerateTestSeriesReport</mainClass>  
+					        <classpathScope>test</classpathScope>
+							<systemProperties>
+					        	<systemProperty>
+					                <key>appcenter.app</key>
+					                <value>${appcenter.app}</value>
+					            </systemProperty>
+					        	<systemProperty>
+					                <key>appcenter.test-series</key>
+					                <value>${appcenter.test-series}</value>
+					            </systemProperty>
+					        </systemProperties>
+				       </configuration>  
+				      </execution>  
+			     </executions>  
+		    </plugin>	      
+	   </plugins>	     
+  </build>    
+ </profile> 
+ 
+ <profile>  
+  <id>start-test</id> 
+  <properties>
+        <auto.env>${auto.env}</auto.env>
+        <auto.app></auto.app>
+        <auto.tc></auto.tc>
+        <auto.suite></auto.suite>
+        <mock.data.mode>${mock.data.mode}</mock.data.mode>
+        <appcenter.app>${appcenter.app}</appcenter.app>
+        <appcenter.deviceSet>${appcenter.deviceSet}</appcenter.deviceSet>
+        <appcenter.test-series>${appcenter.test-series}</appcenter.test-series>
+        <appcenter.app.release.id></appcenter.app.release.id>
+        <download.app.from></download.app.from>
+        
+  </properties>
+  <build>  
+	   <plugins>
+		   <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-surefire-plugin</artifactId>
+		        <version>3.0.0-M3</version>
+		        <configuration>
+		          <skipTests>true</skipTests>
+		        </configuration>
+		    </plugin> 
+		     
+		    <plugin>  
+			     <groupId>org.codehaus.mojo</groupId>  
+			     <artifactId>exec-maven-plugin</artifactId>  
+			     <version>1.1.1</version>  
+			     <executions>  
+				      <execution>  
+				       <phase>package</phase>  
+				       <goals>  
+				        	<goal>java</goal>  
+				       </goals>  
+				       <configuration>  
+					        <mainClass>automation.execution.central.AppCenterExecution</mainClass>  
+					        <classpathScope>test</classpathScope>
+							<systemProperties>
+					            <systemProperty>
+					                <key>auto.env</key>
+					                <value>${auto.env}</value>
+					            </systemProperty>
+					        	<systemProperty>
+					                <key>auto.app</key>
+					                <value>${auto.app}</value>
+					            </systemProperty>
+					        	<systemProperty>
+					                <key>auto.tc</key>
+					                <value>${auto.tc}</value>
+					            </systemProperty>
+					        	<systemProperty>
+					                <key>auto.suite</key>
+					                <value>${auto.suite}</value>
+					            </systemProperty>
+					            <systemProperty>
+					                <key>mock.data.mode</key>
+					                <value>${mock.data.mode}</value>
+					            </systemProperty>
+					        	<systemProperty>
+					                <key>appcenter.app</key>
+					                <value>${appcenter.app}</value>
+					            </systemProperty>
+					        	<systemProperty>
+					                <key>appcenter.deviceSet</key>
+					                <value>${appcenter.deviceSet}</value>
+					            </systemProperty>
+					        	<systemProperty>
+					                <key>appcenter.test-series</key>
+					                <value>${appcenter.test-series}</value>
+					            </systemProperty>
+					        	<systemProperty>
+					                <key>appcenter.app.release.id</key>
+					                <value>${appcenter.app.release.id}</value>
+					            </systemProperty>
+					       		<systemProperty>
+					                <key>download.app.from</key>
+					                <value>${download.app.from}</value>
+					            </systemProperty>
+					        </systemProperties>
+				       </configuration>  
+				      </execution>  
+			     </executions>  
+		    </plugin>	      
+	   </plugins>	     
+  </build>    
+ </profile>  
+
+
+
+<profile>
+  <id>appcenter-upload</id>
+  <properties>
+        <auto.env>${auto.env}</auto.env>
+        <auto.tc></auto.tc>
+        <auto.suite></auto.suite>
+		<download.app.from></download.app.from>
+      <!--suppress UnresolvedMavenProperty -->
+      <auto.os>${os}</auto.os>
+        <appcenter.app>${appcenter.app}</appcenter.app>
+        <mock.data.mode>${mock.data.mode}</mock.data.mode>
+        <appcenter.deviceSet>${appcenter.deviceSet}</appcenter.deviceSet>
+        <auto.target>AppCenter</auto.target>
+  </properties>
+  
+<build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.10</version>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/upload/dependency-jars/</outputDirectory>
+              <useRepositoryLayout>true</useRepositoryLayout>
+              <copyPom>true</copyPom>
+              <addParentPoms>true</addParentPoms>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-help-plugin</artifactId>
+        <version>2.2</version>
+        <executions>
+          <execution>
+            <id>generate-pom</id>
+            <phase>package</phase>
+            <goals>
+              <goal>effective-pom</goal>
+            </goals>
+            <configuration>
+              <output>${project.build.directory}/upload/pom.xml</output>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-testclasses</id>
+            <phase>package</phase>
+            <goals>
+              <goal>testResources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/upload/test-classes</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>
+                    ${project.build.testOutputDirectory}
+                  </directory>
+                </resource>
+                <resource>
+					<directory>src/test/resources</directory>
+					<filtering>true</filtering>
+				</resource>                
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>  
+</profile>
+
+</profiles>
+
+
+</project>
